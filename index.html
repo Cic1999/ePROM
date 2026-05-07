@@ -226,6 +226,15 @@
 
   .muted { color: #d0d4e0; }
 
+  .rate-note {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--text-muted);
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 8px 14px;
+    margin-top: 4px;
+  }
+  .rate-note i { font-size: 14px; flex-shrink: 0; color: var(--blue); }
+
   /* ── RESPONSIVE ── */
   @media (max-width: 860px) {
     .sidebar { width: 170px; }
@@ -268,13 +277,13 @@
 
   <!-- SIDEBAR -->
   <nav class="sidebar" id="sidebar">
-    <div class="sidebar-section-label">各團隊</div>
-    <div id="sidebarTeams"></div>
-    <div class="sidebar-divider"></div>
     <div class="sidebar-overall active" id="sidebarOverall" onclick="selectView('overall')">
       <div class="sidebar-overall-icon"></div>
       <div class="sidebar-overall-name">整體總覽</div>
     </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section-label">各團隊</div>
+    <div id="sidebarTeams"></div>
   </nav>
 
   <!-- CONTENT -->
@@ -315,7 +324,17 @@ const DATA = {
 const TEAMS = Object.keys(DATA);
 const ALL   = TEAMS.flatMap(t => DATA[t].map(r => ({ ...r, team: t })));
 const pct   = (n, d) => d === 0 ? '—' : (n / d * 100).toFixed(1) + '%';
+// 有效回收率：分母排除死亡案例（死亡者無法填答，不計入應回收數）
+const pctEff = (recv, sent, death) => {
+  const denom = sent - death;
+  return denom <= 0 ? '—' : (recv / denom * 100).toFixed(1) + '%';
+};
 const pctN  = (n, d) => d === 0 ? 0 : Math.min(100, n / d * 100);
+const pctEffN = (recv, sent, death) => {
+  const denom = sent - death;
+  return denom <= 0 ? 0 : Math.min(100, recv / denom * 100);
+};
+const RATE_NOTE = '回收率計算方式：回收數 ÷（發送數 − 死亡數），排除死亡案例後之有效回收率';
 const teamSent  = t => DATA[t].reduce((s,r)=>s+r.sent,  0);
 const teamRecv  = t => DATA[t].reduce((s,r)=>s+r.recv,  0);
 const teamDeath = t => DATA[t].reduce((s,r)=>s+r.death, 0);
@@ -343,7 +362,7 @@ function renderStrip() {
       <div class="strip-metric-info">
         <div class="strip-metric-label">總回收</div>
         <div class="strip-metric-value">${recv}</div>
-        <div class="strip-metric-sub">回收率 ${pct(recv, sent)}</div>
+        <div class="strip-metric-sub">有效回收率 ${pctEff(recv, sent, death)}</div>
       </div>
     </div>
     <div class="strip-metric">
@@ -368,8 +387,8 @@ function renderStrip() {
 function renderSidebar() {
   document.getElementById('sidebarTeams').innerHTML = TEAMS.map(t => {
     const cfg = TEAMS_CONFIG[t] || { color: '#888' };
-    const s = teamSent(t), r = teamRecv(t);
-    const rate = s === 0 ? '—' : (r/s*100).toFixed(0) + '%';
+    const s = teamSent(t), r = teamRecv(t), d = teamDeath(t);
+    const rate = pctEff(r, s, d);
     return `<div class="sidebar-team ${t===currentView?'active':''}"
       style="--team-color:${cfg.color}"
       onclick="selectView('${t}')">
@@ -422,7 +441,7 @@ function renderOverallView() {
           <div>
             <div class="team-ov-stat-label">回收</div>
             <div class="team-ov-stat-val">${r}</div>
-            <div class="team-ov-stat-sub">${pct(r,s)}</div>
+            <div class="team-ov-stat-sub">${pctEff(r,s,d)}</div>
           </div>
           <div>
             <div class="team-ov-stat-label">死亡</div>
@@ -430,7 +449,7 @@ function renderOverallView() {
           </div>
         </div>
         <div class="team-ov-bar">
-          <div class="team-ov-bar-fill" style="width:${pctN(r,s)}%;background:${cfg.color}"></div>
+          <div class="team-ov-bar-fill" style="width:${pctEffN(r,s,d)}%;background:${cfg.color}"></div>
         </div>
         <div class="team-ov-link">點擊查看明細 →</div>
       </div>
@@ -445,6 +464,7 @@ function renderOverallView() {
       <div class="card">
         <div class="table-wrap"><table>${tableHtml}</table></div>
       </div>
+      <div class="rate-note"><i class="ti ti-info-circle"></i> ${RATE_NOTE}</div>
     </div>`;
 }
 
@@ -459,15 +479,15 @@ function renderTeamView(team) {
   const death = teamDeath(team);
   const unrec = sent - recv - death;
 
-  let detailHtml = `<thead><tr><th>問卷</th><th>發送</th><th>回收</th><th>回收率</th><th>未回收</th><th>死亡</th></tr></thead><tbody>`;
+  let detailHtml = `<thead><tr><th>問卷</th><th>發送</th><th>回收</th><th>有效回收率 *</th><th>未回收</th><th>死亡</th></tr></thead><tbody>`;
   rows.forEach(r => {
     detailHtml += `<tr>
       <td>${r.quest}</td><td>${r.sent}</td><td>${r.recv}</td>
       <td>
         <div style="display:flex;align-items:center;gap:10px">
-          <span style="font-weight:700;min-width:38px">${pct(r.recv,r.sent)}</span>
+          <span style="font-weight:700;min-width:42px">${pctEff(r.recv,r.sent,r.death)}</span>
           <div style="flex:1;height:5px;background:#e8edf5;border-radius:3px;min-width:40px">
-            <div style="width:${pctN(r.recv,r.sent)}%;height:100%;background:${cfg.color};border-radius:3px"></div>
+            <div style="width:${pctEffN(r.recv,r.sent,r.death)}%;height:100%;background:${cfg.color};border-radius:3px"></div>
           </div>
         </div>
       </td>
@@ -476,7 +496,7 @@ function renderTeamView(team) {
     </tr>`;
   });
   if (rows.length > 1) {
-    detailHtml += `<tr class="total-row"><td>合計</td><td>${sent}</td><td>${recv}</td><td>${pct(recv,sent)}</td><td>${unrec}</td><td>${death>0?`<span class="badge badge-death">${death}</span>`:'—'}</td></tr>`;
+    detailHtml += `<tr class="total-row"><td>合計</td><td>${sent}</td><td>${recv}</td><td>${pctEff(recv,sent,death)}</td><td>${unrec}</td><td>${death>0?`<span class="badge badge-death">${death}</span>`:'—'}</td></tr>`;
   }
   detailHtml += '</tbody>';
 
@@ -498,10 +518,10 @@ function renderTeamView(team) {
         <div class="metric-sub">份問卷</div>
       </div>
       <div class="metric metric-green">
-        <div class="metric-label">回收</div>
+        <div class="metric-label">有效回收率</div>
         <div class="metric-value">${recv}</div>
-        <div class="metric-sub">${pct(recv,sent)}</div>
-        <div class="rate-bar"><div class="rate-fill" style="width:${pctN(recv,sent)}%"></div></div>
+        <div class="metric-sub">${pctEff(recv,sent,death)}</div>
+        <div class="rate-bar"><div class="rate-fill" style="width:${pctEffN(recv,sent,death)}%"></div></div>
       </div>
       <div class="metric metric-amber">
         <div class="metric-label">未回收</div>
@@ -527,7 +547,8 @@ function renderTeamView(team) {
         <span class="card-header-dot"></span>${team} — 各問卷明細
       </div>
       <div class="table-wrap"><table>${detailHtml}</table></div>
-    </div>`;
+    </div>
+    <div class="rate-note"><i class="ti ti-info-circle"></i> ${RATE_NOTE}</div>`;
 
   // draw chart
   const recvColor  = cfg.color;
