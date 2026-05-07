@@ -260,7 +260,7 @@
     <div class="header-badge">ePROM</div>
     <div>
       <div class="header-title">ePROM 問卷回收分析</div>
-      <div class="header-sub">回收區間：2024/08/01 – 2026/05/06</div>
+      <div class="header-sub">回收區間：2025/08/01 – 2026/05/06</div>
     </div>
   </div>
   <div class="header-meta">
@@ -302,16 +302,17 @@ const TEAMS_CONFIG = {
 
 const DATA = {
   "OHCA": [
-    { quest: "事件發生後30日", sent: 10,  recv: 2,   death: 0 },
-    { quest: "出院後30天",     sent: 9,   recv: 1,   death: 0 },
-    { quest: "出院後90天",     sent: 7,   recv: 0,   death: 0 }
+    { quest: "事件發生後30日", sent: 10,  recv: 1,  death: 0 },
+    { quest: "出院後30天",     sent: 8,   recv: 0,  death: 0 },
+    { quest: "出院後90天",     sent: 6,   recv: 0,  death: 0 }
   ],
   "Trauma": [
-    { quest: "出院後30天", sent: 93,  recv: 22, death: 0 },
-    { quest: "出院後90天", sent: 145, recv: 18, death: 2 }
+    { quest: "出院前（EQ-5D+IADL）", sent: 2,   recv: 2,  death: 0 },
+    { quest: "出院後30天",           sent: 93,  recv: 22, death: 1 },
+    { quest: "出院後90天",           sent: 145, recv: 18, death: 3 }
   ],
   "腦中風": [
-    { quest: "出院後90天", sent: 860, recv: 129, death: 6 }
+    { quest: "出院後90天", sent: 851, recv: 161, death: 8 }
   ],
   "加護護理團隊": [
     { quest: "加護病房預防譫妄之照護經驗調查", sent: 17, recv: 16, death: 0 }
