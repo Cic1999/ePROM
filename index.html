@@ -31,7 +31,6 @@
   html { font-size: 16px; }
   body { font-family: 'Noto Sans TC', 'DM Sans', sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100vh; display: flex; flex-direction: column; }
 
-  /* ── HEADER ── */
   .header {
     background: linear-gradient(135deg, #0F3A6E 0%, #1D6FB8 45%, #0D7A4E 100%);
     padding: 22px 32px;
@@ -51,7 +50,6 @@
   .header-meta-label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 1px; }
   .header-meta-val { font-size: 13px; font-weight: 600; }
 
-  /* ── OVERALL STRIP ── */
   .overall-strip {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
@@ -71,15 +69,12 @@
   .icon-green { background: var(--green-bg); color: var(--green); }
   .icon-amber { background: var(--amber-bg); color: var(--amber); }
   .icon-red   { background: var(--red-bg);   color: var(--red); }
-  .strip-metric-info {}
   .strip-metric-label { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-secondary); }
   .strip-metric-value { font-size: 26px; font-weight: 700; line-height: 1.1; font-family: 'DM Sans', sans-serif; color: var(--text-primary); }
   .strip-metric-sub { font-size: 12px; color: var(--text-secondary); margin-top: 1px; }
 
-  /* ── BODY ── */
   .body { display: flex; flex: 1; min-height: 0; }
 
-  /* ── SIDEBAR ── */
   .sidebar {
     width: 210px;
     flex-shrink: 0;
@@ -100,7 +95,6 @@
     cursor: pointer;
     border-left: 3px solid transparent;
     transition: background 0.12s, border-color 0.12s;
-    position: relative;
   }
   .sidebar-team:hover { background: var(--bg); }
   .sidebar-team.active { border-left-color: var(--team-color); background: var(--bg); }
@@ -127,10 +121,8 @@
   .sidebar-overall-icon { width: 10px; height: 10px; border-radius: 3px; background: linear-gradient(135deg, #1D6FB8, #0D7A4E); flex-shrink: 0; }
   .sidebar-overall-name { font-size: 13px; font-weight: 500; color: var(--text-primary); }
 
-  /* ── CONTENT ── */
   .content { flex: 1; min-width: 0; overflow-y: auto; padding: 24px 28px 32px; }
 
-  /* ── CONTENT HEADER ── */
   .content-header {
     display: flex; align-items: flex-start; justify-content: space-between;
     margin-bottom: 20px; flex-wrap: wrap; gap: 8px;
@@ -140,7 +132,6 @@
   .content-title { font-size: 20px; font-weight: 700; color: var(--text-primary); }
   .content-subtitle { font-size: 13px; color: var(--text-secondary); margin-top: 2px; margin-left: 24px; }
 
-  /* ── METRIC CARDS ── */
   .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
   .metric { border-radius: var(--radius-sm); border: 1.5px solid transparent; padding: 14px 16px; box-shadow: var(--shadow-sm); }
   .metric-blue  { background: var(--blue-bg);  border-color: var(--blue-border); }
@@ -167,12 +158,10 @@
   .metric-blue  .rate-fill { background: var(--blue); }
   .metric-green .rate-fill { background: var(--green); }
 
-  /* ── CARD ── */
   .card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 16px; }
   .card-header { padding: 11px 18px; background: var(--surface2); border-bottom: 1px solid var(--border); font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
   .card-header-dot { width: 7px; height: 7px; border-radius: 50%; background: linear-gradient(135deg, #1D6FB8, #0D7A4E); flex-shrink: 0; }
 
-  /* ── TABLE ── */
   .table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; }
   th { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-secondary); text-align: left; padding: 9px 16px; border-bottom: 1px solid var(--border); background: var(--surface2); white-space: nowrap; }
@@ -181,19 +170,15 @@
   tr:hover td { background: rgba(29,111,184,0.03); }
   .total-row td { background: var(--surface2); font-weight: 700; border-top: 1px solid var(--border); }
 
-  /* ── LEGEND ── */
   .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 12px; font-size: 12px; color: var(--text-secondary); }
   .legend span { display: flex; align-items: center; gap: 5px; }
   .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
 
-  /* ── CHART ── */
   .chart-wrap { position: relative; width: 100%; height: 240px; margin-bottom: 16px; }
 
-  /* ── BADGE ── */
   .badge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 20px; }
   .badge-death { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
 
-  /* ── OVERALL TABLE view ── */
   .overall-view {}
   .section-label {
     display: flex; align-items: center; gap: 8px;
@@ -202,7 +187,6 @@
   }
   .section-label::before { content: ''; display: block; width: 3px; height: 14px; border-radius: 2px; background: linear-gradient(180deg, #1D6FB8, #0D7A4E); flex-shrink: 0; }
 
-  /* ── TEAM OVERVIEW CARDS (overall page) ── */
   .team-overview-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
   .team-overview-card {
     background: var(--surface); border-radius: var(--radius-sm); border: 1px solid var(--border);
@@ -235,7 +219,6 @@
   }
   .rate-note i { font-size: 14px; flex-shrink: 0; color: var(--blue); }
 
-  /* ── RESPONSIVE ── */
   @media (max-width: 860px) {
     .sidebar { width: 170px; }
     .metric-grid { grid-template-columns: repeat(2,1fr); }
@@ -254,28 +237,23 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="header">
   <div class="header-left">
     <div class="header-badge">ePROM</div>
     <div>
       <div class="header-title">ePROM 問卷回收分析</div>
-      <div class="header-sub">回收區間：2025/08/01 – 2026/05/06</div>
+      <div class="header-sub">回收區間：2025/08/01 – 2026/06/11</div>
     </div>
   </div>
   <div class="header-meta">
     <div class="header-meta-label">資料更新日期</div>
-    <div class="header-meta-val">2026/05/06</div>
+    <div class="header-meta-val">2026/06/11</div>
   </div>
 </header>
 
-<!-- OVERALL STRIP -->
 <div class="overall-strip" id="overallStrip"></div>
 
-<!-- BODY -->
 <div class="body">
-
-  <!-- SIDEBAR -->
   <nav class="sidebar" id="sidebar">
     <div class="sidebar-overall active" id="sidebarOverall" onclick="selectView('overall')">
       <div class="sidebar-overall-icon"></div>
@@ -285,10 +263,7 @@
     <div class="sidebar-section-label">各團隊</div>
     <div id="sidebarTeams"></div>
   </nav>
-
-  <!-- CONTENT -->
   <main class="content" id="contentArea"></main>
-
 </div>
 
 <script>
@@ -298,43 +273,41 @@ const TEAMS_CONFIG = {
   "腦中風":     { color: "#047857" },
   "加護護理團隊": { color: "#B45309" },
   "精神醫學部":  { color: "#BE185D" },
+  "急性冠心症":  { color: "#0891B2" },
 };
 
 const DATA = {
   "OHCA": [
-    { quest: "事件發生後30日", sent: 10,  recv: 1,  death: 0 },
-    { quest: "出院後30天",     sent: 8,   recv: 0,  death: 0 },
-    { quest: "出院後90天",     sent: 6,   recv: 0,  death: 0 }
+    { quest: "出院前",       sent: 7,  recv: 0,  death: 2 },
+    { quest: "事件發生後30日", sent: 10, recv: 1,  death: 0 },
+    { quest: "出院後30天",   sent: 10, recv: 1,  death: 0 },
+    { quest: "出院後90天",   sent: 7,  recv: 0,  death: 0 }
   ],
   "Trauma": [
-    { quest: "出院前（EQ-5D+IADL）", sent: 2,   recv: 2,  death: 0 },
-    { quest: "出院後30天",           sent: 93,  recv: 22, death: 1 },
-    { quest: "出院後90天",           sent: 145, recv: 18, death: 3 }
+    { quest: "出院前（EQ-5D-5L+IADL）", sent: 3,   recv: 3,  death: 0 },
+    { quest: "出院後30天",               sent: 93,  recv: 22, death: 1 },
+    { quest: "出院後90天",               sent: 145, recv: 18, death: 3 }
   ],
   "腦中風": [
-    { quest: "出院後90天", sent: 851, recv: 161, death: 8 }
+    { quest: "出院後90天", sent: 956, recv: 174, death: 8 }
   ],
   "加護護理團隊": [
-    { quest: "加護病房預防譫妄之照護經驗調查", sent: 17, recv: 16, death: 0 }
+    { quest: "加護病房預防譫妄之照護經驗調查", sent: 33, recv: 24, death: 0 }
   ],
   "精神醫學部": [
     { quest: "BSRS簡式健康量表", sent: 9, recv: 7, death: 0 }
-  ]
+  ],
+  "急性冠心症": [
+    { quest: "出院前（EQ-5D-5L+IADL）", sent: 10, recv: 9, death: 0 }
+  ],
 };
 
 const TEAMS = Object.keys(DATA);
 const ALL   = TEAMS.flatMap(t => DATA[t].map(r => ({ ...r, team: t })));
-const pct   = (n, d) => d === 0 ? '—' : (n / d * 100).toFixed(1) + '%';
-// 有效回收率：分母排除死亡案例（死亡者無法填答，不計入應回收數）
-const pctEff = (recv, sent, death) => {
-  const denom = sent - death;
-  return denom <= 0 ? '—' : (recv / denom * 100).toFixed(1) + '%';
-};
-const pctN  = (n, d) => d === 0 ? 0 : Math.min(100, n / d * 100);
-const pctEffN = (recv, sent, death) => {
-  const denom = sent - death;
-  return denom <= 0 ? 0 : Math.min(100, recv / denom * 100);
-};
+const pct     = (n, d) => d === 0 ? '—' : (n / d * 100).toFixed(1) + '%';
+const pctEff  = (recv, sent, death) => { const denom = sent - death; return denom <= 0 ? '—' : (recv / denom * 100).toFixed(1) + '%'; };
+const pctN    = (n, d) => d === 0 ? 0 : Math.min(100, n / d * 100);
+const pctEffN = (recv, sent, death) => { const denom = sent - death; return denom <= 0 ? 0 : Math.min(100, recv / denom * 100); };
 const RATE_NOTE = '回收率計算方式：回收數 ÷（發送數 − 死亡數），排除死亡案例後之有效回收率';
 const teamSent  = t => DATA[t].reduce((s,r)=>s+r.sent,  0);
 const teamRecv  = t => DATA[t].reduce((s,r)=>s+r.recv,  0);
@@ -343,7 +316,6 @@ const teamDeath = t => DATA[t].reduce((s,r)=>s+r.death, 0);
 let currentView = 'overall';
 let chartInst = null;
 
-/* ── OVERALL STRIP ── */
 function renderStrip() {
   const sent  = ALL.reduce((s,r)=>s+r.sent,  0);
   const recv  = ALL.reduce((s,r)=>s+r.recv,  0);
@@ -384,7 +356,6 @@ function renderStrip() {
     </div>`;
 }
 
-/* ── SIDEBAR ── */
 function renderSidebar() {
   document.getElementById('sidebarTeams').innerHTML = TEAMS.map(t => {
     const cfg = TEAMS_CONFIG[t] || { color: '#888' };
@@ -398,16 +369,12 @@ function renderSidebar() {
       <div class="sidebar-team-rate">${rate}</div>
     </div>`;
   }).join('');
-
-  const overallEl = document.getElementById('sidebarOverall');
-  overallEl.classList.toggle('active', currentView === 'overall');
+  document.getElementById('sidebarOverall').classList.toggle('active', currentView === 'overall');
 }
 
-/* ── OVERALL VIEW ── */
 function renderOverallView() {
   if (chartInst) { chartInst.destroy(); chartInst = null; }
 
-  // Build send table
   const quests = [...new Set(ALL.map(r => r.quest))];
   let tableHtml = `<thead><tr><th>問卷</th>${TEAMS.map(t=>`<th>${t}</th>`).join('')}<th>小計</th></tr></thead><tbody>`;
   quests.forEach(q => {
@@ -424,7 +391,6 @@ function renderOverallView() {
   TEAMS.forEach(t=>{ const s=teamSent(t); grand+=s; tableHtml+=`<td>${s}</td>`; });
   tableHtml += `<td>${grand}</td></tr></tbody>`;
 
-  // Team overview cards
   const teamCardsHtml = TEAMS.map(t => {
     const cfg = TEAMS_CONFIG[t] || { color: '#888' };
     const s = teamSent(t), r = teamRecv(t), d = teamDeath(t);
@@ -469,7 +435,6 @@ function renderOverallView() {
     </div>`;
 }
 
-/* ── TEAM VIEW ── */
 function renderTeamView(team) {
   if (chartInst) { chartInst.destroy(); chartInst = null; }
 
@@ -551,7 +516,6 @@ function renderTeamView(team) {
     </div>
     <div class="rate-note"><i class="ti ti-info-circle"></i> ${RATE_NOTE}</div>`;
 
-  // draw chart
   const recvColor  = cfg.color;
   const unrecColor = cfg.color + '55';
 
@@ -587,7 +551,6 @@ function renderTeamView(team) {
   }, 0);
 }
 
-/* ── SELECT VIEW ── */
 function selectView(view) {
   currentView = view;
   renderSidebar();
@@ -598,7 +561,6 @@ function selectView(view) {
   }
 }
 
-/* ── INIT ── */
 renderStrip();
 renderSidebar();
 renderOverallView();
