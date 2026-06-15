@@ -20,51 +20,31 @@
     --radius-sm: 8px;
     --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.05);
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-
     --blue:  #1D6FB8; --blue-bg: #EBF4FF;  --blue-border: #93C5FD;
     --green: #0D7A4E; --green-bg: #ECFDF5; --green-border: #6EE7B7;
     --amber: #92400E; --amber-bg: #FFFBEB; --amber-border: #FCD34D;
     --red:   #991B1B; --red-bg: #FEF2F2;   --red-border: #FCA5A5;
   }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { font-size: 16px; }
   body { font-family: 'Noto Sans TC', 'DM Sans', sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100vh; display: flex; flex-direction: column; }
 
   .header {
     background: linear-gradient(135deg, #0F3A6E 0%, #1D6FB8 45%, #0D7A4E 100%);
-    padding: 22px 32px;
-    color: #fff;
-    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
-    flex-shrink: 0;
+    padding: 22px 32px; color: #fff;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; flex-shrink: 0;
   }
   .header-left { display: flex; align-items: center; gap: 14px; }
-  .header-badge {
-    background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.28);
-    border-radius: 20px; padding: 4px 14px; font-size: 11px; font-weight: 700;
-    letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.9);
-  }
+  .header-badge { background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.28); border-radius: 20px; padding: 4px 14px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.9); }
   .header-title { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
   .header-sub { font-size: 13px; color: rgba(255,255,255,0.65); margin-top: 2px; }
   .header-meta { background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.22); border-radius: 10px; padding: 6px 14px; text-align: right; }
   .header-meta-label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 1px; }
   .header-meta-val { font-size: 13px; font-weight: 600; }
 
-  .overall-strip {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 16px 32px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    flex-shrink: 0;
-  }
+  .overall-strip { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 32px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; flex-shrink: 0; }
   .strip-metric { display: flex; align-items: center; gap: 12px; }
-  .strip-metric-icon {
-    width: 40px; height: 40px; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; flex-shrink: 0;
-  }
+  .strip-metric-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
   .icon-blue  { background: var(--blue-bg);  color: var(--blue); }
   .icon-green { background: var(--green-bg); color: var(--green); }
   .icon-amber { background: var(--amber-bg); color: var(--amber); }
@@ -75,58 +55,24 @@
 
   .body { display: flex; flex: 1; min-height: 0; }
 
-  .sidebar {
-    width: 210px;
-    flex-shrink: 0;
-    background: var(--surface);
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  .sidebar-section-label {
-    padding: 14px 16px 8px;
-    font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--text-muted);
-  }
-  .sidebar-team {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 16px;
-    cursor: pointer;
-    border-left: 3px solid transparent;
-    transition: background 0.12s, border-color 0.12s;
-  }
+  .sidebar { width: 210px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+  .sidebar-section-label { padding: 14px 16px 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+  .sidebar-team { display: flex; align-items: center; gap: 10px; padding: 10px 16px; cursor: pointer; border-left: 3px solid transparent; transition: background 0.12s, border-color 0.12s; }
   .sidebar-team:hover { background: var(--bg); }
   .sidebar-team.active { border-left-color: var(--team-color); background: var(--bg); }
   .sidebar-team-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--team-color); flex-shrink: 0; }
   .sidebar-team-name { font-size: 13px; font-weight: 500; color: var(--text-primary); flex: 1; line-height: 1.3; }
-  .sidebar-team-rate {
-    font-size: 11px; font-weight: 700;
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 20px; padding: 1px 7px;
-    color: var(--text-secondary);
-    flex-shrink: 0;
-  }
+  .sidebar-team-rate { font-size: 11px; font-weight: 700; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 1px 7px; color: var(--text-secondary); flex-shrink: 0; }
   .sidebar-team.active .sidebar-team-rate { background: var(--team-color); border-color: var(--team-color); color: #fff; }
-
   .sidebar-divider { height: 1px; background: var(--border); margin: 8px 16px; }
-  .sidebar-overall {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 16px; cursor: pointer;
-    border-left: 3px solid transparent;
-    transition: background 0.12s, border-color 0.12s;
-  }
+  .sidebar-overall { display: flex; align-items: center; gap: 10px; padding: 10px 16px; cursor: pointer; border-left: 3px solid transparent; transition: background 0.12s, border-color 0.12s; }
   .sidebar-overall:hover { background: var(--bg); }
   .sidebar-overall.active { border-left-color: #1D6FB8; background: var(--bg); }
   .sidebar-overall-icon { width: 10px; height: 10px; border-radius: 3px; background: linear-gradient(135deg, #1D6FB8, #0D7A4E); flex-shrink: 0; }
   .sidebar-overall-name { font-size: 13px; font-weight: 500; color: var(--text-primary); }
 
   .content { flex: 1; min-width: 0; overflow-y: auto; padding: 24px 28px 32px; }
-
-  .content-header {
-    display: flex; align-items: flex-start; justify-content: space-between;
-    margin-bottom: 20px; flex-wrap: wrap; gap: 8px;
-  }
+  .content-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 8px; }
   .content-title-row { display: flex; align-items: center; gap: 10px; }
   .content-team-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
   .content-title { font-size: 20px; font-weight: 700; color: var(--text-primary); }
@@ -173,30 +119,19 @@
   .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 12px; font-size: 12px; color: var(--text-secondary); }
   .legend span { display: flex; align-items: center; gap: 5px; }
   .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
-
   .chart-wrap { position: relative; width: 100%; height: 240px; margin-bottom: 16px; }
 
   .badge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 20px; }
   .badge-death { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
 
   .overall-view {}
-  .section-label {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--text-secondary); margin-bottom: 12px;
-  }
+  .section-label { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 12px; }
   .section-label::before { content: ''; display: block; width: 3px; height: 14px; border-radius: 2px; background: linear-gradient(180deg, #1D6FB8, #0D7A4E); flex-shrink: 0; }
 
   .team-overview-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
-  .team-overview-card {
-    background: var(--surface); border-radius: var(--radius-sm); border: 1px solid var(--border);
-    box-shadow: var(--shadow-sm); overflow: hidden; cursor: pointer; transition: transform 0.12s, box-shadow 0.12s;
-  }
+  .team-overview-card { background: var(--surface); border-radius: var(--radius-sm); border: 1px solid var(--border); box-shadow: var(--shadow-sm); overflow: hidden; cursor: pointer; transition: transform 0.12s, box-shadow 0.12s; }
   .team-overview-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
-  .team-overview-card-head {
-    padding: 10px 14px; display: flex; align-items: center; gap: 8px;
-    border-bottom: 1px solid var(--border);
-  }
+  .team-overview-card-head { padding: 10px 14px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--border); }
   .team-overview-card-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
   .team-overview-card-name { font-size: 13px; font-weight: 700; }
   .team-overview-card-body { padding: 12px 14px; }
@@ -207,16 +142,8 @@
   .team-ov-bar { height: 5px; border-radius: 3px; background: var(--bg); overflow: hidden; }
   .team-ov-bar-fill { height: 100%; border-radius: 3px; }
   .team-ov-link { font-size: 11px; color: var(--text-muted); margin-top: 8px; text-align: right; }
-
   .muted { color: #d0d4e0; }
-
-  .rate-note {
-    display: flex; align-items: center; gap: 6px;
-    font-size: 12px; color: var(--text-muted);
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius-sm); padding: 8px 14px;
-    margin-top: 4px;
-  }
+  .rate-note { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 14px; margin-top: 4px; }
   .rate-note i { font-size: 14px; flex-shrink: 0; color: var(--blue); }
 
   @media (max-width: 860px) {
@@ -278,27 +205,27 @@ const TEAMS_CONFIG = {
 
 const DATA = {
   "OHCA": [
-    { quest: "出院前",       sent: 7,  recv: 0,  death: 2 },
-    { quest: "事件發生後30日", sent: 10, recv: 1,  death: 0 },
-    { quest: "出院後30天",   sent: 10, recv: 1,  death: 0 },
-    { quest: "出院後90天",   sent: 7,  recv: 0,  death: 0 }
+    { quest: "出院前（EQ-5D-5L）",  sent: 7,  recv: 0,  death: 2 },
+    { quest: "事件發生後30日",       sent: 10, recv: 1,  death: 0 },
+    { quest: "出院後30天",           sent: 10, recv: 1,  death: 0 },
+    { quest: "出院後90天",           sent: 7,  recv: 0,  death: 0 },
   ],
   "Trauma": [
     { quest: "出院前（EQ-5D-5L+IADL）", sent: 3,   recv: 3,  death: 0 },
     { quest: "出院後30天",               sent: 93,  recv: 22, death: 1 },
-    { quest: "出院後90天",               sent: 145, recv: 18, death: 3 }
+    { quest: "出院後90天",               sent: 145, recv: 18, death: 3 },
   ],
   "腦中風": [
-    { quest: "出院後90天", sent: 956, recv: 174, death: 8 }
+    { quest: "出院後90天", sent: 956, recv: 174, death: 8 },
   ],
   "加護護理團隊": [
-    { quest: "加護病房預防譫妄之照護經驗調查", sent: 33, recv: 24, death: 0 }
+    { quest: "加護病房預防譫妄之照護經驗調查", sent: 33, recv: 24, death: 0 },
   ],
   "精神醫學部": [
-    { quest: "BSRS簡式健康量表", sent: 9, recv: 7, death: 0 }
+    { quest: "BSRS簡式健康量表", sent: 3088, recv: 12, death: 53 },
   ],
   "急性冠心症": [
-    { quest: "出院前（EQ-5D-5L+IADL）", sent: 10, recv: 9, death: 0 }
+    { quest: "出院前（EQ-5D-5L+IADL）", sent: 10, recv: 9, death: 0 },
   ],
 };
 
@@ -326,7 +253,7 @@ function renderStrip() {
       <div class="strip-metric-icon icon-blue"><i class="ti ti-send" aria-hidden="true"></i></div>
       <div class="strip-metric-info">
         <div class="strip-metric-label">整體發送</div>
-        <div class="strip-metric-value">${sent}</div>
+        <div class="strip-metric-value">${sent.toLocaleString()}</div>
         <div class="strip-metric-sub">${TEAMS.length} 個團隊</div>
       </div>
     </div>
@@ -334,7 +261,7 @@ function renderStrip() {
       <div class="strip-metric-icon icon-green"><i class="ti ti-clipboard-check" aria-hidden="true"></i></div>
       <div class="strip-metric-info">
         <div class="strip-metric-label">總回收</div>
-        <div class="strip-metric-value">${recv}</div>
+        <div class="strip-metric-value">${recv.toLocaleString()}</div>
         <div class="strip-metric-sub">有效回收率 ${pctEff(recv, sent, death)}</div>
       </div>
     </div>
@@ -342,7 +269,7 @@ function renderStrip() {
       <div class="strip-metric-icon icon-amber"><i class="ti ti-hourglass" aria-hidden="true"></i></div>
       <div class="strip-metric-info">
         <div class="strip-metric-label">未回收</div>
-        <div class="strip-metric-value">${unrec}</div>
+        <div class="strip-metric-value">${unrec.toLocaleString()}</div>
         <div class="strip-metric-sub">${pct(unrec, sent)}</div>
       </div>
     </div>
@@ -350,7 +277,7 @@ function renderStrip() {
       <div class="strip-metric-icon icon-red"><i class="ti ti-heart-off" aria-hidden="true"></i></div>
       <div class="strip-metric-info">
         <div class="strip-metric-label">死亡案例</div>
-        <div class="strip-metric-value">${death}</div>
+        <div class="strip-metric-value">${death.toLocaleString()}</div>
         <div class="strip-metric-sub">${pct(death, sent)}</div>
       </div>
     </div>`;
@@ -360,13 +287,12 @@ function renderSidebar() {
   document.getElementById('sidebarTeams').innerHTML = TEAMS.map(t => {
     const cfg = TEAMS_CONFIG[t] || { color: '#888' };
     const s = teamSent(t), r = teamRecv(t), d = teamDeath(t);
-    const rate = pctEff(r, s, d);
     return `<div class="sidebar-team ${t===currentView?'active':''}"
       style="--team-color:${cfg.color}"
       onclick="selectView('${t}')">
       <div class="sidebar-team-dot"></div>
       <div class="sidebar-team-name">${t}</div>
-      <div class="sidebar-team-rate">${rate}</div>
+      <div class="sidebar-team-rate">${pctEff(r,s,d)}</div>
     </div>`;
   }).join('');
   document.getElementById('sidebarOverall').classList.toggle('active', currentView === 'overall');
@@ -382,14 +308,14 @@ function renderOverallView() {
     TEAMS.forEach(t => {
       const s = (DATA[t]||[]).filter(r=>r.quest===q).reduce((a,r)=>a+r.sent,0);
       tot += s;
-      tableHtml += `<td>${s||'<span class="muted">—</span>'}</td>`;
+      tableHtml += `<td>${s ? s.toLocaleString() : '<span class="muted">—</span>'}</td>`;
     });
-    tableHtml += `<td style="font-weight:700">${tot}</td></tr>`;
+    tableHtml += `<td style="font-weight:700">${tot.toLocaleString()}</td></tr>`;
   });
   tableHtml += `<tr class="total-row"><td>合計</td>`;
   let grand=0;
-  TEAMS.forEach(t=>{ const s=teamSent(t); grand+=s; tableHtml+=`<td>${s}</td>`; });
-  tableHtml += `<td>${grand}</td></tr></tbody>`;
+  TEAMS.forEach(t=>{ const s=teamSent(t); grand+=s; tableHtml+=`<td>${s.toLocaleString()}</td>`; });
+  tableHtml += `<td>${grand.toLocaleString()}</td></tr></tbody>`;
 
   const teamCardsHtml = TEAMS.map(t => {
     const cfg = TEAMS_CONFIG[t] || { color: '#888' };
@@ -403,11 +329,11 @@ function renderOverallView() {
         <div class="team-ov-stats">
           <div>
             <div class="team-ov-stat-label">發送</div>
-            <div class="team-ov-stat-val">${s}</div>
+            <div class="team-ov-stat-val">${s.toLocaleString()}</div>
           </div>
           <div>
             <div class="team-ov-stat-label">回收</div>
-            <div class="team-ov-stat-val">${r}</div>
+            <div class="team-ov-stat-val">${r.toLocaleString()}</div>
             <div class="team-ov-stat-sub">${pctEff(r,s,d)}</div>
           </div>
           <div>
@@ -448,7 +374,9 @@ function renderTeamView(team) {
   let detailHtml = `<thead><tr><th>問卷</th><th>發送</th><th>回收</th><th>有效回收率 *</th><th>未回收</th><th>死亡</th></tr></thead><tbody>`;
   rows.forEach(r => {
     detailHtml += `<tr>
-      <td>${r.quest}</td><td>${r.sent}</td><td>${r.recv}</td>
+      <td>${r.quest}</td>
+      <td>${r.sent.toLocaleString()}</td>
+      <td>${r.recv.toLocaleString()}</td>
       <td>
         <div style="display:flex;align-items:center;gap:10px">
           <span style="font-weight:700;min-width:42px">${pctEff(r.recv,r.sent,r.death)}</span>
@@ -457,12 +385,12 @@ function renderTeamView(team) {
           </div>
         </div>
       </td>
-      <td>${r.sent-r.recv-r.death}</td>
+      <td>${(r.sent-r.recv-r.death).toLocaleString()}</td>
       <td>${r.death>0?`<span class="badge badge-death">${r.death}</span>`:'<span class="muted">—</span>'}</td>
     </tr>`;
   });
   if (rows.length > 1) {
-    detailHtml += `<tr class="total-row"><td>合計</td><td>${sent}</td><td>${recv}</td><td>${pctEff(recv,sent,death)}</td><td>${unrec}</td><td>${death>0?`<span class="badge badge-death">${death}</span>`:'—'}</td></tr>`;
+    detailHtml += `<tr class="total-row"><td>合計</td><td>${sent.toLocaleString()}</td><td>${recv.toLocaleString()}</td><td>${pctEff(recv,sent,death)}</td><td>${unrec.toLocaleString()}</td><td>${death>0?`<span class="badge badge-death">${death}</span>`:'—'}</td></tr>`;
   }
   detailHtml += '</tbody>';
 
@@ -476,38 +404,35 @@ function renderTeamView(team) {
         <div class="content-subtitle">問卷回收詳細數據</div>
       </div>
     </div>
-
     <div class="metric-grid">
       <div class="metric metric-blue">
         <div class="metric-label">發送</div>
-        <div class="metric-value">${sent}</div>
+        <div class="metric-value">${sent.toLocaleString()}</div>
         <div class="metric-sub">份問卷</div>
       </div>
       <div class="metric metric-green">
         <div class="metric-label">有效回收率</div>
-        <div class="metric-value">${recv}</div>
+        <div class="metric-value">${recv.toLocaleString()}</div>
         <div class="metric-sub">${pctEff(recv,sent,death)}</div>
         <div class="rate-bar"><div class="rate-fill" style="width:${pctEffN(recv,sent,death)}%"></div></div>
       </div>
       <div class="metric metric-amber">
         <div class="metric-label">未回收</div>
-        <div class="metric-value">${unrec}</div>
+        <div class="metric-value">${unrec.toLocaleString()}</div>
         <div class="metric-sub">${pct(unrec,sent)}</div>
       </div>
       <div class="metric metric-red">
         <div class="metric-label">死亡</div>
-        <div class="metric-value">${death}</div>
+        <div class="metric-value">${death.toLocaleString()}</div>
         <div class="metric-sub">佔 ${pct(death,sent)}</div>
       </div>
     </div>
-
     <div class="legend">
       <span><span class="legend-dot" style="background:${cfg.color}"></span>已回收</span>
       <span><span class="legend-dot" style="background:${cfg.color}44"></span>未回收</span>
       <span><span class="legend-dot" style="background:#E24B4A"></span>死亡</span>
     </div>
     <div class="chart-wrap"><canvas id="teamChart"></canvas></div>
-
     <div class="card">
       <div class="card-header">
         <span class="card-header-dot"></span>${team} — 各問卷明細
@@ -515,9 +440,6 @@ function renderTeamView(team) {
       <div class="table-wrap"><table>${detailHtml}</table></div>
     </div>
     <div class="rate-note"><i class="ti ti-info-circle"></i> ${RATE_NOTE}</div>`;
-
-  const recvColor  = cfg.color;
-  const unrecColor = cfg.color + '55';
 
   setTimeout(() => {
     const canvas = document.getElementById('teamChart');
@@ -528,8 +450,8 @@ function renderTeamView(team) {
       data: {
         labels: rows.map(r => r.quest),
         datasets: [
-          { label:'已回收', data:rows.map(r=>r.recv),  backgroundColor:recvColor,  borderRadius:5, stack:'a' },
-          { label:'未回收', data:rows.map(r=>Math.max(0,r.sent-r.recv-r.death)), backgroundColor:unrecColor, stack:'a' },
+          { label:'已回收', data:rows.map(r=>r.recv),  backgroundColor:cfg.color, borderRadius:5, stack:'a' },
+          { label:'未回收', data:rows.map(r=>Math.max(0,r.sent-r.recv-r.death)), backgroundColor:cfg.color+'55', stack:'a' },
           { label:'死亡',   data:rows.map(r=>r.death), backgroundColor:'#E24B4A', borderRadius:5, stack:'a' },
         ]
       },
@@ -539,7 +461,7 @@ function renderTeamView(team) {
           legend:{display:false},
           tooltip:{callbacks:{label:ctx=>{
             const t=rows[ctx.dataIndex].sent;
-            return ` ${ctx.dataset.label}: ${ctx.parsed.y} (${(ctx.parsed.y/t*100).toFixed(1)}%)`;
+            return ` ${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()} (${(ctx.parsed.y/t*100).toFixed(1)}%)`;
           }}}
         },
         scales:{
@@ -554,11 +476,8 @@ function renderTeamView(team) {
 function selectView(view) {
   currentView = view;
   renderSidebar();
-  if (view === 'overall') {
-    renderOverallView();
-  } else {
-    renderTeamView(view);
-  }
+  if (view === 'overall') renderOverallView();
+  else renderTeamView(view);
 }
 
 renderStrip();
