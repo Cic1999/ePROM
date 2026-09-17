@@ -226,6 +226,52 @@
 
   .muted { color: #d0d4e0; }
 
+  .sidebar-special {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 16px; cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: background 0.12s, border-color 0.12s;
+  }
+  .sidebar-special:hover { background: var(--bg); }
+  .sidebar-special.active { border-left-color: #BE185D; background: var(--bg); }
+  .sidebar-special.active .sidebar-team-rate { background: #BE185D; border-color: #BE185D; color: #fff; }
+  .sidebar-special-icon {
+    width: 22px; height: 22px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; flex-shrink: 0;
+  }
+
+  /* ── BSRS PAGE ── */
+  .bsrs-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+  .bsrs-grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+  .risk-card {
+    border-radius: var(--radius-sm); padding: 16px 18px; border: 1.5px solid;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .risk-card-label { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; }
+  .risk-card-value { font-size: 32px; font-weight: 700; font-family: 'DM Sans', sans-serif; line-height: 1; }
+  .risk-card-sub   { font-size: 12px; }
+  .risk-none  { background:#F0FDF4; border-color:#86EFAC; }
+  .risk-none  .risk-card-label { color:#15803D; }
+  .risk-none  .risk-card-value { color:#14532D; }
+  .risk-none  .risk-card-sub   { color:#15803D; }
+  .risk-score { background:#FFFBEB; border-color:#FCD34D; }
+  .risk-score .risk-card-label { color:#92400E; }
+  .risk-score .risk-card-value { color:#78350F; }
+  .risk-score .risk-card-sub   { color:#92400E; }
+  .risk-q6    { background:#FFF1F2; border-color:#FDA4AF; }
+  .risk-q6    .risk-card-label { color:#9F1239; }
+  .risk-q6    .risk-card-value { color:#881337; }
+  .risk-q6    .risk-card-sub   { color:#9F1239; }
+  .risk-both  { background:#FEF2F2; border-color:#FCA5A5; }
+  .risk-both  .risk-card-label { color:#991B1B; }
+  .risk-both  .risk-card-value { color:#7F1D1D; }
+  .risk-both  .risk-card-sub   { color:#991B1B; }
+
+  @media (max-width: 700px) {
+    .bsrs-grid2, .bsrs-grid3 { grid-template-columns: 1fr; }
+  }
+
   .rate-note {
     display: flex; align-items: center; gap: 6px;
     font-size: 12px; color: var(--text-muted);
@@ -260,12 +306,12 @@
     <div class="header-badge">ePROM</div>
     <div>
       <div class="header-title">ePROM 問卷回收分析</div>
-      <div class="header-sub">回收區間：2025/08/01 – 2026/08/13</div>
+      <div class="header-sub">回收區間：2025/08/01 – 2026/09/16</div>
     </div>
   </div>
   <div class="header-meta">
     <div class="header-meta-label">資料更新日期</div>
-    <div class="header-meta-val">2026/08/13</div>
+    <div class="header-meta-val">2026/09/16</div>
   </div>
 </header>
 
@@ -284,6 +330,13 @@
     <div class="sidebar-divider"></div>
     <div class="sidebar-section-label">各團隊</div>
     <div id="sidebarTeams"></div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section-label">全院</div>
+    <div class="sidebar-special ${currentView==='bsrs'?'active':''}" id="sidebarBSRS" onclick="selectView('bsrs')" style="--team-color:#BE185D">
+      <div class="sidebar-special-icon" style="background:#BE185D22;color:#BE185D">B</div>
+      <div class="sidebar-team-name">BSRS</div>
+      <div class="sidebar-team-rate" id="bsrsSidebarRate"></div>
+    </div>
   </nav>
 
   <!-- CONTENT -->
@@ -298,28 +351,34 @@ const TEAMS_CONFIG = {
   "腦中風":     { color: "#047857" },
   "急性冠心症": { color: "#0891B2" },
   "加護護理團隊": { color: "#B45309" },
+  "關節置換照護": { color: "#6B7280" },
 };
 
 const DATA = {
   "OHCA": [
     { quest: "事件發生後30日",  sent: 10,  recv: 1,  death: 0 },
-    { quest: "出院前（EQ-5D）", sent: 15,  recv: 1,  death: 2 },
+    { quest: "出院前（EQ-5D）", sent: 18,  recv: 1,  death: 2 },
     { quest: "出院後30天",      sent: 10,  recv: 1,  death: 0 },
     { quest: "出院後90天",      sent: 7,   recv: 0,  death: 0 }
   ],
   "Trauma": [
-    { quest: "出院前（EQ-5D+IADL）", sent: 52,  recv: 6,  death: 0 },
-    { quest: "出院後30天",           sent: 208, recv: 40, death: 1 },
-    { quest: "出院後90天",           sent: 238, recv: 35, death: 3 }
+    { quest: "出院前（EQ-5D+IADL）", sent: 85,  recv: 8,  death: 0 },
+    { quest: "出院後30天",           sent: 260, recv: 45, death: 1 },
+    { quest: "出院後90天",           sent: 289, recv: 36, death: 3 }
   ],
   "腦中風": [
     { quest: "出院後90天", sent: 1057, recv: 193, death: 8 }
   ],
   "急性冠心症": [
-    { quest: "出院前（EQ-5D+IADL）", sent: 79, recv: 23, death: 0 }
+    { quest: "出院前（EQ-5D+IADL）", sent: 163, recv: 43, death: 1 },
+    { quest: "出院後30天",           sent: 4,   recv: 3,  death: 0 },
+    { quest: "出院後90天",           sent: 1,   recv: 0,  death: 0 }
   ],
   "加護護理團隊": [
-    { quest: "加護病房預防譫妄之照護經驗調查", sent: 120, recv: 47, death: 1 }
+    { quest: "加護病房預防譫妄之照護經驗調查", sent: 187, recv: 65, death: 1 }
+  ],
+  "關節置換照護": [
+    { quest: "出院前（EQ-5D）", sent: 67, recv: 7, death: 0 }
   ]
 };
 
@@ -346,17 +405,18 @@ let chartInst = null;
 
 /* ── OVERALL STRIP ── */
 function renderStrip() {
-  const sent  = ALL.reduce((s,r)=>s+r.sent,  0);
-  const recv  = ALL.reduce((s,r)=>s+r.recv,  0);
-  const death = ALL.reduce((s,r)=>s+r.death, 0);
+  const sent  = ALL.reduce((s,r)=>s+r.sent,  0) + BSRS.total_sent;
+  const recv  = ALL.reduce((s,r)=>s+r.recv,  0) + BSRS.total_recv;
+  const death = ALL.reduce((s,r)=>s+r.death, 0); // BSRS 無死亡欄位
   const unrec = sent - recv - death;
+  const teamCount = TEAMS.length + 1; // 含 BSRS
   document.getElementById('overallStrip').innerHTML = `
     <div class="strip-metric">
       <div class="strip-metric-icon icon-blue"><i class="ti ti-send" aria-hidden="true"></i></div>
       <div class="strip-metric-info">
         <div class="strip-metric-label">整體發送</div>
         <div class="strip-metric-value">${sent}</div>
-        <div class="strip-metric-sub">${TEAMS.length} 個團隊</div>
+        <div class="strip-metric-sub">${teamCount} 個團隊／問卷</div>
       </div>
     </div>
     <div class="strip-metric">
@@ -383,6 +443,11 @@ function renderStrip() {
         <div class="strip-metric-sub">${pct(death, sent)}</div>
       </div>
     </div>`;
+
+  // BSRS sidebar 回收率
+  const bsrsRate = (BSRS.total_recv / BSRS.total_sent * 100).toFixed(1) + '%';
+  const el = document.getElementById('bsrsSidebarRate');
+  if (el) el.textContent = bsrsRate;
 }
 
 /* ── SIDEBAR ── */
@@ -592,11 +657,306 @@ function renderTeamView(team) {
 function selectView(view) {
   currentView = view;
   renderSidebar();
+  // BSRS sidebar highlight
+  const bsrsEl = document.getElementById('sidebarBSRS');
+  if (bsrsEl) bsrsEl.classList.toggle('active', view === 'bsrs');
   if (view === 'overall') {
     renderOverallView();
+  } else if (view === 'bsrs') {
+    renderBSRSView();
   } else {
     renderTeamView(view);
   }
+}
+
+/* ══════════════════════════════════════
+   BSRS DATA & RENDER
+══════════════════════════════════════ */
+const BSRS = {
+  total_sent: 897,
+  total_recv: 164,
+  risk: { neither: 153, only_score: 7, only_q6: 0, both: 4 },
+  daily: [
+    {date:'09/10', sent:2,   recv:0},
+    {date:'09/11', sent:164, recv:23},
+    {date:'09/12', sent:161, recv:17},
+    {date:'09/13', sent:107, recv:17},
+    {date:'09/14', sent:109, recv:26},
+    {date:'09/15', sent:183, recv:37},
+    {date:'09/16', sent:171, recv:44}
+  ],
+  rate_daily: [
+    {date:'09/11', rate:14.0},
+    {date:'09/12', rate:5.2},
+    {date:'09/13', rate:3.9},
+    {date:'09/14', rate:4.7},
+    {date:'09/15', rate:5.1},
+    {date:'09/16', rate:6.1}
+  ],
+  q_labels: ['Q1 睡眠困難','Q2 緊張不安','Q3 容易苦惱','Q4 感覺憂鬱','Q5 比不上別人','Q6 自殺想法'],
+  q_scale:  ['不會','輕微','中等程度','嚴重','非常嚴重'],
+  q_dist: [
+    [53,56,33,19,3],
+    [69,66,23,5,1],
+    [85,56,19,4,0],
+    [90,52,17,4,1],
+    [123,28,11,1,1],
+    [152,8,3,1,0]
+  ],
+  identity: [
+    {label:'本人',  count:107},
+    {label:'子女',  count:23},
+    {label:'父母',  count:17},
+    {label:'配偶',  count:10},
+    {label:'親屬',  count:6},
+    {label:'關係人',count:1}
+  ],
+  cross: [
+    {label:'本人',   avg:3.5, n:107},
+    {label:'子女',   avg:4.9, n:23},
+    {label:'父母',   avg:2.6, n:17},
+    {label:'配偶',   avg:4.0, n:10},
+    {label:'親屬',   avg:4.5, n:6},
+    {label:'關係人', avg:3.0, n:1}
+  ]
+};
+
+let bsrsCharts = [];
+function destroyBSRSCharts() {
+  bsrsCharts.forEach(c => c.destroy());
+  bsrsCharts = [];
+}
+
+function renderBSRSView() {
+  destroyBSRSCharts();
+  const pctEff2 = (r,s) => s===0?'—':(r/s*100).toFixed(1)+'%';
+  const risk = BSRS.risk;
+  const totalRisk = risk.only_score + risk.only_q6 + risk.both;
+
+  document.getElementById('contentArea').innerHTML = `
+    <div class="content-header">
+      <div>
+        <div class="content-title-row">
+          <div class="content-team-dot" style="background:#BE185D"></div>
+          <div class="content-title">BSRS 簡式健康量表</div>
+        </div>
+        <div class="content-subtitle">資料區間：2026/08/23 – 2026/09/16 &nbsp;·&nbsp; 精神醫學部</div>
+      </div>
+    </div>
+
+    <!-- 摘要指標 -->
+    <div class="metric-grid" style="margin-bottom:20px">
+      <div class="metric metric-blue">
+        <div class="metric-label">發送</div>
+        <div class="metric-value">${BSRS.total_sent}</div>
+        <div class="metric-sub">份問卷</div>
+      </div>
+      <div class="metric metric-green">
+        <div class="metric-label">回收</div>
+        <div class="metric-value">${BSRS.total_recv}</div>
+        <div class="metric-sub">有效回收率 ${pctEff2(BSRS.total_recv, BSRS.total_sent)}</div>
+        <div class="rate-bar"><div class="rate-fill" style="width:${BSRS.total_recv/BSRS.total_sent*100}%"></div></div>
+      </div>
+      <div class="metric metric-amber">
+        <div class="metric-label">未回收</div>
+        <div class="metric-value">${BSRS.total_sent - BSRS.total_recv}</div>
+        <div class="metric-sub">${pctEff2(BSRS.total_sent-BSRS.total_recv, BSRS.total_sent)}</div>
+      </div>
+      <div class="metric metric-red">
+        <div class="metric-label">風險人數</div>
+        <div class="metric-value">${totalRisk}</div>
+        <div class="metric-sub">佔回收 ${pctEff2(totalRisk, BSRS.total_recv)}</div>
+      </div>
+    </div>
+
+    <!-- ① 每日發送 & 回收 -->
+    <div class="section-label">① 每日發送與回收量</div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-header"><span class="card-header-dot"></span>每日發送 vs 回收（2026/09/11–09/16 為主要發送期）</div>
+      <div style="padding:16px"><div style="position:relative;height:220px"><canvas id="bsrsDailyChart"></canvas></div></div>
+    </div>
+
+    <!-- ② 風險分組 -->
+    <div class="section-label">② 風險分組（已回收 ${BSRS.total_recv} 份）</div>
+    <div class="bsrs-grid2" style="margin-bottom:16px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="risk-card risk-none">
+          <div class="risk-card-label">無風險</div>
+          <div class="risk-card-value">${risk.neither}</div>
+          <div class="risk-card-sub">${pctEff2(risk.neither,BSRS.total_recv)} · 總分 &lt; 10 且 Q6 正常</div>
+        </div>
+        <div class="risk-card risk-score">
+          <div class="risk-card-label">僅總分 ≥ 10</div>
+          <div class="risk-card-value">${risk.only_score}</div>
+          <div class="risk-card-sub">${pctEff2(risk.only_score,BSRS.total_recv)} · Q6 無異常</div>
+        </div>
+        <div class="risk-card risk-q6">
+          <div class="risk-card-label">僅 Q6 中等/嚴重</div>
+          <div class="risk-card-value">${risk.only_q6}</div>
+          <div class="risk-card-sub">${pctEff2(risk.only_q6,BSRS.total_recv)} · 總分 &lt; 10</div>
+        </div>
+        <div class="risk-card risk-both">
+          <div class="risk-card-label">兩者皆符合</div>
+          <div class="risk-card-value">${risk.both}</div>
+          <div class="risk-card-sub">${pctEff2(risk.both,BSRS.total_recv)} · 總分 ≥ 10 且 Q6 中等/嚴重</div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <div class="card-header"><span class="card-header-dot"></span>風險分組比例</div>
+        <div style="padding:16px;display:flex;align-items:center;justify-content:center;height:180px">
+          <canvas id="bsrsRiskChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ④ 各題嚴重程度 -->
+    <div class="section-label">④ 各題嚴重程度分布（已回收 ${BSRS.total_recv} 份）</div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-header"><span class="card-header-dot"></span>Q1–Q6 各選項人數（堆疊長條）</div>
+      <div style="padding:16px"><div style="position:relative;height:260px"><canvas id="bsrsQChart"></canvas></div></div>
+    </div>
+
+    <!-- ⑤ 每日回收率 -->
+    <div class="section-label">⑤ 每日回收率趨勢</div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-header"><span class="card-header-dot"></span>當日回收數 ÷ 累積發送數（%）</div>
+      <div style="padding:16px"><div style="position:relative;height:180px"><canvas id="bsrsRateChart"></canvas></div></div>
+    </div>
+
+    <!-- ⑥ 填寫者 -->
+    <div class="section-label">⑥ 填寫者身分分析</div>
+    <div class="bsrs-grid2" style="margin-bottom:16px">
+      <div class="card" style="margin-bottom:0">
+        <div class="card-header"><span class="card-header-dot"></span>填寫者身分分布</div>
+        <div style="padding:16px;display:flex;align-items:center;justify-content:center;height:200px">
+          <canvas id="bsrsIdentityChart"></canvas>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <div class="card-header"><span class="card-header-dot"></span>填寫者身分 × 平均總分</div>
+        <div style="padding:16px"><div style="position:relative;height:190px"><canvas id="bsrsCrossChart"></canvas></div></div>
+      </div>
+    </div>
+
+    <div class="rate-note"><i class="ti ti-info-circle"></i> 有效回收率：回收數 ÷ 發送數。風險定義：總分 ≥ 10 或 Q6（有自殺的想法）選中等程度 / 嚴重。</div>
+  `;
+
+  setTimeout(() => {
+    // ① 每日發送 & 回收
+    bsrsCharts.push(new Chart(document.getElementById('bsrsDailyChart'), {
+      type: 'bar',
+      data: {
+        labels: BSRS.daily.map(d=>d.date),
+        datasets: [
+          { label:'發送', data: BSRS.daily.map(d=>d.sent), backgroundColor:'#93C5FD', borderRadius:4, order:2 },
+          { label:'回收', data: BSRS.daily.map(d=>d.recv), backgroundColor:'#BE185D', borderRadius:4, order:1 }
+        ]
+      },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ position:'top', labels:{ font:{size:12} } } },
+        scales:{
+          x:{ grid:{display:false}, ticks:{font:{size:12}} },
+          y:{ grid:{color:'rgba(0,0,0,0.05)'}, ticks:{font:{size:12}, maxTicksLimit:6} }
+        }
+      }
+    }));
+
+    // ② 風險圓餅
+    bsrsCharts.push(new Chart(document.getElementById('bsrsRiskChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['無風險','僅總分≥10','僅Q6中等/嚴重','兩者皆符合'],
+        datasets: [{ data: [risk.neither, risk.only_score, risk.only_q6, risk.both],
+          backgroundColor:['#86EFAC','#FCD34D','#FDA4AF','#FCA5A5'],
+          borderWidth:2, borderColor:'#fff' }]
+      },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ position:'right', labels:{ font:{size:11}, boxWidth:12 } } }
+      }
+    }));
+
+    // ④ 各題堆疊
+    const scaleColors = ['#D1FAE5','#A7F3D0','#FCD34D','#F87171','#DC2626'];
+    const qDatasets = BSRS.q_scale.map((s,i) => ({
+      label: s,
+      data: BSRS.q_dist.map(row => row[i]),
+      backgroundColor: scaleColors[i],
+      borderRadius: i===4?4:0,
+      stack:'a'
+    }));
+    bsrsCharts.push(new Chart(document.getElementById('bsrsQChart'), {
+      type:'bar',
+      data:{ labels: BSRS.q_labels, datasets: qDatasets },
+      options:{
+        responsive:true, maintainAspectRatio:false, indexAxis:'y',
+        plugins:{ legend:{ position:'top', labels:{ font:{size:11}, boxWidth:12 } } },
+        scales:{
+          x:{ stacked:true, grid:{color:'rgba(0,0,0,0.05)'}, ticks:{font:{size:11}, maxTicksLimit:6} },
+          y:{ stacked:true, grid:{display:false}, ticks:{font:{size:12, family:"'Noto Sans TC',sans-serif"}} }
+        }
+      }
+    }));
+
+    // ⑤ 回收率折線
+    bsrsCharts.push(new Chart(document.getElementById('bsrsRateChart'), {
+      type:'line',
+      data:{
+        labels: BSRS.rate_daily.map(d=>d.date),
+        datasets:[{
+          label:'當日回收率 (%)', data: BSRS.rate_daily.map(d=>d.rate),
+          borderColor:'#BE185D', backgroundColor:'rgba(190,24,93,0.08)',
+          pointBackgroundColor:'#BE185D', pointRadius:5,
+          fill:true, tension:0.3
+        }]
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{display:false} },
+        scales:{
+          x:{ grid:{display:false}, ticks:{font:{size:12}} },
+          y:{ grid:{color:'rgba(0,0,0,0.05)'}, ticks:{font:{size:12}, callback:v=>v+'%'}, min:0 }
+        }
+      }
+    }));
+
+    // ⑥ 身分環形
+    const idColors = ['#7C3AED','#0369A1','#047857','#B45309','#0891B2'];
+    bsrsCharts.push(new Chart(document.getElementById('bsrsIdentityChart'), {
+      type:'doughnut',
+      data:{
+        labels: BSRS.identity.map(d=>d.label),
+        datasets:[{ data: BSRS.identity.map(d=>d.count),
+          backgroundColor: idColors, borderWidth:2, borderColor:'#fff' }]
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ position:'right', labels:{ font:{size:12}, boxWidth:12 } } }
+      }
+    }));
+
+    // ⑥ 身分 × 平均總分
+    bsrsCharts.push(new Chart(document.getElementById('bsrsCrossChart'), {
+      type:'bar',
+      data:{
+        labels: BSRS.cross.map(d=>`${d.label}(n=${d.n})`),
+        datasets:[{
+          label:'平均總分', data: BSRS.cross.map(d=>d.avg),
+          backgroundColor: idColors, borderRadius:6
+        }]
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{display:false} },
+        scales:{
+          x:{ grid:{display:false}, ticks:{font:{size:11}} },
+          y:{ grid:{color:'rgba(0,0,0,0.05)'}, ticks:{font:{size:12}}, min:0, max:8 }
+        }
+      }
+    }));
+
+  }, 0);
 }
 
 /* ── INIT ── */
