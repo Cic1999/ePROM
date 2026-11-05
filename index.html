@@ -306,12 +306,12 @@
     <div class="header-badge">ePROM</div>
     <div>
       <div class="header-title">ePROM 問卷回收分析</div>
-      <div class="header-sub">回收區間：2025/08/01 – 2026/09/16</div>
+      <div class="header-sub">回收區間：2025/08/01 – 2026/11/04</div>
     </div>
   </div>
   <div class="header-meta">
     <div class="header-meta-label">資料更新日期</div>
-    <div class="header-meta-val">2026/09/16</div>
+    <div class="header-meta-val">2026/11/04</div>
   </div>
 </header>
 
@@ -352,33 +352,37 @@ const TEAMS_CONFIG = {
   "急性冠心症": { color: "#0891B2" },
   "加護護理團隊": { color: "#B45309" },
   "關節置換照護": { color: "#6B7280" },
+  "藥劑部":       { color: "#4F46E5" },
 };
 
 const DATA = {
   "OHCA": [
-    { quest: "事件發生後30日",  sent: 10,  recv: 1,  death: 0 },
-    { quest: "出院前（EQ-5D）", sent: 18,  recv: 1,  death: 2 },
-    { quest: "出院後30天",      sent: 10,  recv: 1,  death: 0 },
-    { quest: "出院後90天",      sent: 7,   recv: 0,  death: 0 }
+    { quest: "事件發生後30日", sent: 12, recv: 1, death: 0 },
+    { quest: "出院前（EQ-5D）", sent: 27, recv: 7, death: 4 },
+    { quest: "出院後30天", sent: 12, recv: 1, death: 0 },
+    { quest: "出院後90天", sent: 8, recv: 0, death: 0 }
   ],
   "Trauma": [
-    { quest: "出院前（EQ-5D+IADL）", sent: 85,  recv: 8,  death: 0 },
-    { quest: "出院後30天",           sent: 260, recv: 45, death: 1 },
-    { quest: "出院後90天",           sent: 289, recv: 36, death: 3 }
+    { quest: "出院前（EQ-5D+IADL）", sent: 136, recv: 41, death: 0 },
+    { quest: "出院後30天", sent: 294, recv: 55, death: 1 },
+    { quest: "出院後90天", sent: 327, recv: 39, death: 3 }
   ],
   "腦中風": [
-    { quest: "出院後90天", sent: 1057, recv: 193, death: 8 }
+    { quest: "出院後90天", sent: 1254, recv: 231, death: 9 }
   ],
   "急性冠心症": [
-    { quest: "出院前（EQ-5D+IADL）", sent: 163, recv: 43, death: 1 },
-    { quest: "出院後30天",           sent: 4,   recv: 3,  death: 0 },
-    { quest: "出院後90天",           sent: 1,   recv: 0,  death: 0 }
+    { quest: "出院前（EQ-5D+IADL）", sent: 278, recv: 64, death: 1 },
+    { quest: "出院後30天", sent: 7, recv: 6, death: 0 },
+    { quest: "出院後90天", sent: 5, recv: 4, death: 0 }
   ],
   "加護護理團隊": [
-    { quest: "加護病房預防譫妄之照護經驗調查", sent: 187, recv: 65, death: 1 }
+    { quest: "加護病房預防譫妄之照護經驗調查", sent: 312, recv: 92, death: 3 }
   ],
   "關節置換照護": [
-    { quest: "出院前（EQ-5D）", sent: 67, recv: 7, death: 0 }
+    { quest: "出院前（EQ-5D）", sent: 241, recv: 48, death: 0 }
+  ],
+  "藥劑部": [
+    { quest: "NCI-PRO-CTCAE", sent: 1, recv: 1, death: 0 }
   ]
 };
 
@@ -673,51 +677,96 @@ function selectView(view) {
    BSRS DATA & RENDER
 ══════════════════════════════════════ */
 const BSRS = {
-  total_sent: 897,
-  total_recv: 164,
-  risk: { neither: 153, only_score: 7, only_q6: 0, both: 4 },
+  // 總筆數 6572；無效發送（發送管道「無」）91 筆 → 實際發送 6481
+  // 其中死亡 31 筆；已回收 2114 筆
+  // 有效回收率 = 2114 ÷ (6481 - 31) = 32.8%
+  total_raw:   6572,
+  total_no:    91,
+  total_sent:  6481,
+  total_dead:  31,
+  total_recv:  2114,
+  channel: [
+    { label:'簡訊', count:5146, pct:78.3 },
+    { label:'奇醫管家', count:968, pct:14.7 },
+    { label:'無（排除）', count:91, pct:1.4 }
+  ],
+  risk: { neither: 1921, only_score: 143, only_q6: 4, both: 46 },
   daily: [
-    {date:'09/10', sent:2,   recv:0},
-    {date:'09/11', sent:164, recv:23},
-    {date:'09/12', sent:161, recv:17},
-    {date:'09/13', sent:107, recv:17},
-    {date:'09/14', sent:109, recv:26},
-    {date:'09/15', sent:183, recv:37},
-    {date:'09/16', sent:171, recv:44}
+    {date:'09/11',sent:135,recv:22}, {date:'09/12',sent:119,recv:17},
+    {date:'09/13',sent:100,recv:15}, {date:'09/14',sent:104,recv:26},
+    {date:'09/15',sent:144,recv:37}, {date:'09/16',sent:141,recv:43},
+    {date:'09/17',sent:157,recv:47}, {date:'09/18',sent:126,recv:38},
+    {date:'09/19',sent:119,recv:42}, {date:'09/20',sent:93,recv:53},
+    {date:'09/21',sent:96,recv:31}, {date:'09/22',sent:159,recv:46},
+    {date:'09/23',sent:155,recv:34}, {date:'09/24',sent:139,recv:44},
+    {date:'09/25',sent:127,recv:38}, {date:'09/26',sent:72,recv:35},
+    {date:'09/27',sent:100,recv:34}, {date:'09/28',sent:56,recv:30},
+    {date:'09/29',sent:110,recv:24}, {date:'09/30',sent:131,recv:33},
+    {date:'10/01',sent:130,recv:27}, {date:'10/02',sent:119,recv:41},
+    {date:'10/03',sent:118,recv:44}, {date:'10/04',sent:109,recv:35},
+    {date:'10/05',sent:111,recv:37}, {date:'10/06',sent:116,recv:37},
+    {date:'10/07',sent:144,recv:27}, {date:'10/08',sent:132,recv:38},
+    {date:'10/09',sent:122,recv:44}, {date:'10/10',sent:78,recv:39},
+    {date:'10/11',sent:73,recv:41}, {date:'10/12',sent:112,recv:55},
+    {date:'10/13',sent:133,recv:47}, {date:'10/14',sent:126,recv:43},
+    {date:'10/15',sent:134,recv:36}, {date:'10/16',sent:119,recv:43},
+    {date:'10/17',sent:113,recv:38}, {date:'10/18',sent:120,recv:61},
+    {date:'10/19',sent:107,recv:41}, {date:'10/20',sent:137,recv:51},
+    {date:'10/21',sent:139,recv:52}, {date:'10/22',sent:143,recv:53},
+    {date:'10/23',sent:114,recv:48}, {date:'10/24',sent:130,recv:16},
+    {date:'10/25',sent:96,recv:14}, {date:'10/26',sent:66,recv:13},
+    {date:'10/27',sent:97,recv:8}, {date:'10/28',sent:128,recv:84},
+    {date:'10/29',sent:127,recv:47}, {date:'10/30',sent:143,recv:50},
+    {date:'10/31',sent:108,recv:37}, {date:'11/01',sent:115,recv:48},
+    {date:'11/02',sent:88,recv:43}, {date:'11/03',sent:117,recv:43},
+    {date:'11/04',sent:134,recv:41}, {date:'11/05',sent:0,recv:3}
   ],
   rate_daily: [
-    {date:'09/11', rate:14.0},
-    {date:'09/12', rate:5.2},
-    {date:'09/13', rate:3.9},
-    {date:'09/14', rate:4.7},
-    {date:'09/15', rate:5.1},
-    {date:'09/16', rate:6.1}
+    {date:'09/11',rate:16.3}, {date:'09/12',rate:6.7}, {date:'09/13',rate:4.2},
+    {date:'09/14',rate:5.7}, {date:'09/15',rate:6.1}, {date:'09/16',rate:5.8},
+    {date:'09/17',rate:5.2}, {date:'09/18',rate:3.7}, {date:'09/19',rate:3.7},
+    {date:'09/20',rate:4.3}, {date:'09/21',rate:2.3}, {date:'09/22',rate:3.1},
+    {date:'09/23',rate:2.1}, {date:'09/24',rate:2.5}, {date:'09/25',rate:2.0},
+    {date:'09/26',rate:1.8}, {date:'09/27',rate:1.6}, {date:'09/28',rate:1.4},
+    {date:'09/29',rate:1.1}, {date:'09/30',rate:1.4}, {date:'10/01',rate:1.1},
+    {date:'10/02',rate:1.6}, {date:'10/03',rate:1.6}, {date:'10/04',rate:1.2},
+    {date:'10/05',rate:1.2}, {date:'10/06',rate:1.2}, {date:'10/07',rate:0.8},
+    {date:'10/08',rate:1.1}, {date:'10/09',rate:1.3}, {date:'10/10',rate:1.1},
+    {date:'10/11',rate:1.1}, {date:'10/12',rate:1.5}, {date:'10/13',rate:1.2},
+    {date:'10/14',rate:1.1}, {date:'10/15',rate:0.9}, {date:'10/16',rate:1.0},
+    {date:'10/17',rate:0.9}, {date:'10/18',rate:1.4}, {date:'10/19',rate:0.9},
+    {date:'10/20',rate:1.1}, {date:'10/21',rate:1.1}, {date:'10/22',rate:1.1},
+    {date:'10/23',rate:0.9}, {date:'10/24',rate:0.3}, {date:'10/25',rate:0.3},
+    {date:'10/26',rate:0.2}, {date:'10/27',rate:0.1}, {date:'10/28',rate:1.5},
+    {date:'10/29',rate:0.8}, {date:'10/30',rate:0.8}, {date:'10/31',rate:0.6},
+    {date:'11/01',rate:0.8}, {date:'11/02',rate:0.7}, {date:'11/03',rate:0.7},
+    {date:'11/04',rate:0.6}, {date:'11/05',rate:0.0}
   ],
   q_labels: ['Q1 睡眠困難','Q2 緊張不安','Q3 容易苦惱','Q4 感覺憂鬱','Q5 比不上別人','Q6 自殺想法'],
   q_scale:  ['不會','輕微','中等程度','嚴重','非常嚴重'],
   q_dist: [
-    [53,56,33,19,3],
-    [69,66,23,5,1],
-    [85,56,19,4,0],
-    [90,52,17,4,1],
-    [123,28,11,1,1],
-    [152,8,3,1,0]
+    [750,684,455,169,56],
+    [977,750,283,87,17],
+    [1166,627,241,57,23],
+    [1198,603,217,72,24],
+    [1574,356,135,31,18],
+    [1964,100,33,9,8]
   ],
   identity: [
-    {label:'本人',  count:107},
-    {label:'子女',  count:23},
-    {label:'父母',  count:17},
-    {label:'配偶',  count:10},
-    {label:'親屬',  count:6},
-    {label:'關係人',count:1}
+    {label:'本人',count:1306},
+    {label:'子女',count:390},
+    {label:'父母',count:170},
+    {label:'配偶',count:131},
+    {label:'親屬',count:100},
+    {label:'關係人',count:17}
   ],
   cross: [
-    {label:'本人',   avg:3.5, n:107},
-    {label:'子女',   avg:4.9, n:23},
-    {label:'父母',   avg:2.6, n:17},
-    {label:'配偶',   avg:4.0, n:10},
-    {label:'親屬',   avg:4.5, n:6},
-    {label:'關係人', avg:3.0, n:1}
+    {label:'本人', avg:3.3, n:1306},
+    {label:'子女', avg:5.1, n:390},
+    {label:'父母', avg:2.5, n:170},
+    {label:'配偶', avg:4.2, n:131},
+    {label:'親屬', avg:4.0, n:100},
+    {label:'關係人', avg:6.2, n:17}
   ]
 };
 
@@ -731,7 +780,10 @@ function renderBSRSView() {
   destroyBSRSCharts();
   const pctEff2 = (r,s) => s===0?'—':(r/s*100).toFixed(1)+'%';
   const risk = BSRS.risk;
-  const totalRisk = risk.only_score + risk.only_q6 + risk.both;
+
+  const effDenom = BSRS.total_sent - BSRS.total_dead;
+  const effRate  = (BSRS.total_recv / effDenom * 100).toFixed(1) + '%';
+  const effRatePct = BSRS.total_recv / effDenom * 100;
 
   document.getElementById('contentArea').innerHTML = `
     <div class="content-header">
@@ -740,39 +792,61 @@ function renderBSRSView() {
           <div class="content-team-dot" style="background:#BE185D"></div>
           <div class="content-title">BSRS 簡式健康量表</div>
         </div>
-        <div class="content-subtitle">資料區間：2026/09/10 – 2026/09/16 &nbsp;·&nbsp; 精神醫學部</div>
+        <div class="content-subtitle">資料區間：2026/09/11 – 2026/11/04 &nbsp;·&nbsp; 精神醫學部</div>
       </div>
     </div>
 
     <!-- 摘要指標 -->
-    <div class="metric-grid" style="margin-bottom:20px">
+    <div class="metric-grid" style="margin-bottom:8px">
       <div class="metric metric-blue">
-        <div class="metric-label">發送</div>
+        <div class="metric-label">實際發送</div>
         <div class="metric-value">${BSRS.total_sent}</div>
-        <div class="metric-sub">份問卷</div>
+        <div class="metric-sub">總筆數 ${BSRS.total_raw}，扣除無效發送（發送管道＝無）${BSRS.total_no} 筆</div>
       </div>
       <div class="metric metric-green">
-        <div class="metric-label">回收</div>
+        <div class="metric-label">有效回收率</div>
         <div class="metric-value">${BSRS.total_recv}</div>
-        <div class="metric-sub">有效回收率 ${pctEff2(BSRS.total_recv, BSRS.total_sent)}</div>
-        <div class="rate-bar"><div class="rate-fill" style="width:${BSRS.total_recv/BSRS.total_sent*100}%"></div></div>
-      </div>
-      <div class="metric metric-amber">
-        <div class="metric-label">未回收</div>
-        <div class="metric-value">${BSRS.total_sent - BSRS.total_recv}</div>
-        <div class="metric-sub">${pctEff2(BSRS.total_sent-BSRS.total_recv, BSRS.total_sent)}</div>
+        <div class="metric-sub">${effRate}（分母排除死亡 ${BSRS.total_dead} 筆）</div>
+        <div class="rate-bar"><div class="rate-fill" style="width:${effRatePct}%"></div></div>
       </div>
       <div class="metric metric-red">
-        <div class="metric-label">風險人數</div>
-        <div class="metric-value">${totalRisk}</div>
-        <div class="metric-sub">佔回收 ${pctEff2(totalRisk, BSRS.total_recv)}</div>
+        <div class="metric-label">死亡個案</div>
+        <div class="metric-value">${BSRS.total_dead}</div>
+        <div class="metric-sub">佔實際發送 ${(BSRS.total_dead/BSRS.total_sent*100).toFixed(1)}%，不列入回收分母</div>
+      </div>
+      <div class="metric metric-red">
+        <div class="metric-label">無效發送</div>
+        <div class="metric-value">${BSRS.total_no}</div>
+        <div class="metric-sub">佔總筆數 ${(BSRS.total_no/BSRS.total_raw*100).toFixed(1)}%（發送管道＝無）</div>
+      </div>
+    </div>
+
+    <!-- ⓪ 發送管道 -->
+    <div class="section-label" style="margin-top:16px">⓪ 發送管道占比</div>
+    <div class="bsrs-grid2" style="margin-bottom:16px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        ${BSRS.channel.map(c=>`
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:12px">
+            <div style="font-size:13px;font-weight:600;min-width:80px;color:var(--text-primary)">${c.label}</div>
+            <div style="flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden">
+              <div style="width:${c.pct}%;height:100%;border-radius:4px;background:${c.label==='無（排除）'?'#d0d4e0':c.label==='奇醫管家'?'#7C3AED':'#BE185D'}"></div>
+            </div>
+            <div style="font-size:13px;font-weight:700;min-width:50px;text-align:right;color:var(--text-primary)">${c.count}</div>
+            <div style="font-size:12px;color:var(--text-secondary);min-width:42px;text-align:right">${c.pct}%</div>
+          </div>`).join('')}
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <div class="card-header"><span class="card-header-dot"></span>發送管道比例</div>
+        <div style="padding:16px;display:flex;align-items:center;justify-content:center;height:160px">
+          <canvas id="bsrsChannelChart"></canvas>
+        </div>
       </div>
     </div>
 
     <!-- ① 每日發送 & 回收 -->
     <div class="section-label">① 每日發送與回收量</div>
     <div class="card" style="margin-bottom:16px">
-      <div class="card-header"><span class="card-header-dot"></span>每日發送 vs 回收（2026/09/11–09/16 為主要發送期）</div>
+      <div class="card-header"><span class="card-header-dot"></span>每日發送 vs 回收（2026/09/11 – 11/04）</div>
       <div style="padding:16px"><div style="position:relative;height:220px"><canvas id="bsrsDailyChart"></canvas></div></div>
     </div>
 
@@ -783,22 +857,22 @@ function renderBSRSView() {
         <div class="risk-card risk-none">
           <div class="risk-card-label">無風險</div>
           <div class="risk-card-value">${risk.neither}</div>
-          <div class="risk-card-sub">${pctEff2(risk.neither,BSRS.total_recv)} · 總分 &lt; 10 且 Q6 正常</div>
+          <div class="risk-card-sub">${(risk.neither/BSRS.total_recv*100).toFixed(1)}% · 總分 &lt; 10 且 Q6 正常</div>
         </div>
         <div class="risk-card risk-score">
           <div class="risk-card-label">僅總分 ≥ 10</div>
           <div class="risk-card-value">${risk.only_score}</div>
-          <div class="risk-card-sub">${pctEff2(risk.only_score,BSRS.total_recv)} · Q6 無異常</div>
+          <div class="risk-card-sub">${(risk.only_score/BSRS.total_recv*100).toFixed(1)}% · Q6 無異常</div>
         </div>
         <div class="risk-card risk-q6">
-          <div class="risk-card-label">僅 Q6 中等/嚴重</div>
+          <div class="risk-card-label">僅 Q6 中等以上</div>
           <div class="risk-card-value">${risk.only_q6}</div>
-          <div class="risk-card-sub">${pctEff2(risk.only_q6,BSRS.total_recv)} · 總分 &lt; 10</div>
+          <div class="risk-card-sub">${(risk.only_q6/BSRS.total_recv*100).toFixed(1)}% · 總分 &lt; 10</div>
         </div>
         <div class="risk-card risk-both">
           <div class="risk-card-label">兩者皆符合</div>
           <div class="risk-card-value">${risk.both}</div>
-          <div class="risk-card-sub">${pctEff2(risk.both,BSRS.total_recv)} · 總分 ≥ 10 且 Q6 中等/嚴重</div>
+          <div class="risk-card-sub">${(risk.both/BSRS.total_recv*100).toFixed(1)}% · 總分 ≥ 10 且 Q6 中等以上</div>
         </div>
       </div>
       <div class="card" style="margin-bottom:0">
@@ -838,10 +912,27 @@ function renderBSRSView() {
       </div>
     </div>
 
-    <div class="rate-note"><i class="ti ti-info-circle"></i> 有效回收率：回收數 ÷ 發送數。風險定義：總分 ≥ 10 或 Q6（有自殺的想法）選中等程度 / 嚴重。</div>
+    <div class="rate-note"><i class="ti ti-info-circle"></i>
+      有效回收率 = 回收數 ÷（實際發送 − 死亡）。實際發送已扣除無效發送（發送管道為「無」）${BSRS.total_no} 筆；無效發送比率 = 無效發送 ÷ 總筆數。風險定義：總分 ≥ 10 或 Q6（有自殺的想法）中等程度以上（中等程度／嚴重／非常嚴重）。
+    </div>
   `;
 
   setTimeout(() => {
+    // ⓪ 發送管道
+    bsrsCharts.push(new Chart(document.getElementById('bsrsChannelChart'), {
+      type: 'doughnut',
+      data: {
+        labels: BSRS.channel.map(c=>c.label),
+        datasets: [{ data: BSRS.channel.map(c=>c.count),
+          backgroundColor:['#BE185D','#7C3AED','#d0d4e0'],
+          borderWidth:2, borderColor:'#fff' }]
+      },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ position:'right', labels:{ font:{size:11}, boxWidth:12 } } }
+      }
+    }));
+
     // ① 每日發送 & 回收
     bsrsCharts.push(new Chart(document.getElementById('bsrsDailyChart'), {
       type: 'bar',
@@ -866,7 +957,7 @@ function renderBSRSView() {
     bsrsCharts.push(new Chart(document.getElementById('bsrsRiskChart'), {
       type: 'doughnut',
       data: {
-        labels: ['無風險','僅總分≥10','僅Q6中等/嚴重','兩者皆符合'],
+        labels: ['無風險','僅總分≥10','僅Q6中等以上','兩者皆符合'],
         datasets: [{ data: [risk.neither, risk.only_score, risk.only_q6, risk.both],
           backgroundColor:['#86EFAC','#FCD34D','#FDA4AF','#FCA5A5'],
           borderWidth:2, borderColor:'#fff' }]
